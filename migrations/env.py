@@ -1,5 +1,7 @@
+import sys
+import glob
+import importlib.util
 from logging.config import fileConfig
-from dotenv import load_dotenv
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -10,8 +12,12 @@ from alembic import context
 from app.config.settings import SQLALCHEMY_DATABASE_URI
 
 # load models
-from app.semester.model import Semester
-from app.user.model import User
+for filename in glob.iglob('app/**/*model.py'):
+    spec = importlib.util.spec_from_file_location('*', filename)
+    models = importlib.util.module_from_spec(spec)
+    sys.modules['*'] = models
+    spec.loader.exec_module(models)
+# import BaseModel from app/config/database.py
 from app.config.database import Base
 
 # this is the Alembic Config object, which provides

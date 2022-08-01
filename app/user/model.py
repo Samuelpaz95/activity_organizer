@@ -1,4 +1,6 @@
+import json
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash
 
 from app.config.database import Base
@@ -7,6 +9,7 @@ from app.user.schema import UserCreate, UserUpdate
 
 class User(Base):
     __tablename__ = 'users'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, index=True, nullable=False)
@@ -14,6 +17,7 @@ class User(Base):
     last_name = Column(String(255), nullable=False)
     username = Column(String(255), unique=True, index=True, nullable=False)
     __password = Column('hashed_password', String(255), nullable=False)
+    user_subjects = relationship('UserSubject', back_populates='users')
 
     def __init__(self, user_in: UserCreate):
         self.update(user_in)
@@ -34,4 +38,5 @@ class User(Base):
         self.__password = generate_password_hash(password)
 
     def __repr__(self) -> str:
-        return f'<User {self.username}, first_name {self.first_name}>'
+        _repr = json.dumps(self.__dict__)
+        return _repr
