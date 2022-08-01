@@ -1,12 +1,16 @@
-# Awikly-backend
+# PyWokly-backend
 
-This is a project for awikly-backend
+This is a project for PyWokly-backend
 
 - Language: python3.10
-- Librery: fastapi
-- Path: awikly-backend/main.py
+- Libreries:
+  - fastapi
+  - uvicorn
+  - sqlalchemy
+  - alembic
+- Path: PyWokly-backend/main.py
 
-# start awikly-backend
+# start PyWokly-backend
 
 - create virtual environment
 
@@ -33,19 +37,13 @@ pip install -U pip setuptools wheel
 pip install -r requirements.txt
 ```
 
-- freeze requirements
-
-```bash
-pip freeze > requirements.txt
-```
-
 - run migrations
 
 ```bash
 alembic upgrade head
 ```
 
-- run awikly-backend
+- run PyWokly-backend
 
 ```bash
 uvicorn main:app --reload
@@ -54,12 +52,20 @@ uvicorn main:app --reload
 - go to http://localhost:8000/
 - documentation: http://localhost:8000/docs/
 
+if you want freeze PyWokly-backend dependencies
+
+- freeze requirements
+
+```bash
+pip freeze > requirements.txt
+```
+
 ## Available commands
 
 - alembic: generate automatic migrations
 
 ```bash
-alembic revision --autogenerate -m "message"
+alembic revision --autogenerate -m "[message]"
 ```
 
 - alembic: upgrade database
