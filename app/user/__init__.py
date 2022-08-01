@@ -1,7 +1,7 @@
 from typing import Optional
 from fastapi import APIRouter, Body, Depends, Path, Query, status
 
-from app.user.schema import PaginateUsers, UserCreate, UserModel
+from app.user.schema import PaginateUsers, UserCreate, UserModel, UserUpdate
 from app.user.service import UserService
 
 router = APIRouter()
@@ -38,3 +38,10 @@ def get_users(limit: Optional[int] = Query(10,
 def get_user_by_id(user_id: int = Path(..., title="User ID"),
                    service: UserService = Depends()) -> UserModel:
     return service.get_user_by_id(user_id)
+
+
+@router.patch("/{user_id}", response_model=UserModel, tags=tags)
+def update_user(user_id: int = Path(..., title="User ID"),
+                user: UserUpdate = Body(...),
+                service: UserService = Depends()) -> UserModel:
+    return service.update_user(user_id, user)
